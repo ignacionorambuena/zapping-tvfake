@@ -32,43 +32,81 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Crear Cuenta
-        </h1>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nombre"
-          onChange={handleChange}
-          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          onChange={handleChange}
-          className="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition duration-300"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+      <div className="w-full max-w-md p-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-2xl space-y-6"
         >
-          Registrarse
-        </button>
-      </form>
+          <h1 className="text-4xl font-semibold text-center mb-8 text-gray-800 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Crear Cuenta
+          </h1>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nombre
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Tu nombre completo"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="ejemplo@correo.com"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+              />
+            </div>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl"
+          >
+            Registrarse
+          </button>
+
+          <p className="text-center text-gray-600 text-sm mt-4">
+            ¿Ya tienes una cuenta?{" "}
+            <a
+              href="/login"
+              className="text-indigo-600 hover:text-indigo-800 font-medium"
+            >
+              Inicia sesión
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
