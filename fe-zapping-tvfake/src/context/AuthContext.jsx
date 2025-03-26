@@ -1,12 +1,11 @@
 import { createContext, useState, useEffect, useMemo, useContext } from "react";
-import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const {
@@ -19,13 +18,20 @@ export function AuthProvider({ children }) {
         console.log("User signed in:", session?.user);
       } else if (event === "SIGNED_OUT") {
         console.log("User signed out");
+        window.location.href = "/";
       }
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Cargar sesión inicial
+    const initSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
       setIsLoading(false);
-    });
+    };
+
+    initSession();
 
     return () => {
       subscription.unsubscribe();
@@ -50,7 +56,7 @@ export function AuthProvider({ children }) {
       // toast.success(
       //   "Registro exitoso. Por favor revisa tu correo para la confirmación."
       // );
-      navigate("/login");
+      window.location.href = "/login";
     } catch (error) {
       // toast.error(error.message || "Error durante el registro.");
       console.error("Error signing up:", error);
@@ -70,7 +76,7 @@ export function AuthProvider({ children }) {
       if (error) throw error;
 
       // toast.success("Inicio de sesión exitoso");
-      navigate("/player");
+      window.location.href = "/player";
     } catch (error) {
       // toast.error(error.message || "Error durante el inicio de sesión.");
       console.error("Error signing in:", error);
@@ -84,7 +90,7 @@ export function AuthProvider({ children }) {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      navigate("/login");
+      window.location.href = "/login";
     } catch (error) {
       // toast.error(error.message || "Error al cerrar sesión.");
       console.error("Error signing out:", error);

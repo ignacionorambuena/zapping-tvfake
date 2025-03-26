@@ -87,24 +87,19 @@ const VideoPlayer = ({ src, poster, autoPlay = false }) => {
   }, [src, autoPlay]);
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-xl shadow-2xl bg-gradient-to-b from-gray-800 to-gray-900 p-2">
+    <div className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-xl shadow-2xl bg-white p-4">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-[#e93f6e] border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-700 z-20">
-        <div
-          className="h-full bg-blue-500 transition-all duration-300"
-          style={{ width: `${bufferProgress}%` }}
-        ></div>
-      </div>
       <video
         ref={videoRef}
-        className="w-full aspect-video bg-black rounded-lg ring-2 ring-blue-500/20 hover:ring-blue-500/40 transition-all duration-300"
+        className="w-full aspect-video bg-black rounded-lg shadow-lg"
         poster={poster}
         playsInline
         controls
+        autoPlay={false}
       />
     </div>
   );
@@ -115,10 +110,9 @@ const PlayerPage = () => {
     import.meta.env.VITE_HLS_SERVER_URL || "http://localhost:3000";
   const streamUrl = `${hlsServerUrl}/live.m3u8`;
 
-  console.log("HLS Server URL:", hlsServerUrl); // Para debugging
+  console.log("HLS Server URL:", hlsServerUrl);
 
   useEffect(() => {
-    // Verificar que el servidor HLS está disponible
     fetch(streamUrl)
       .then((response) => {
         if (!response.ok) {
@@ -132,10 +126,10 @@ const PlayerPage = () => {
   }, [streamUrl]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
-      <div className="w-full max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#e93f6e] to-[#f4e387] flex items-center justify-center p-6">
+      <div className="w-full max-w-7xl mx-auto space-y-8 mt-10">
         <h1 className="text-4xl font-bold text-center text-white mb-8 tracking-tight">
-          Reproductor de Video
+          Zapping TVFake
         </h1>
         <div className="relative">
           <VideoPlayer src={streamUrl} autoPlay controls />

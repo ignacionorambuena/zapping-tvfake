@@ -1,112 +1,93 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabase";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
-export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const { signUp } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: { data: { name: formData.name } },
-      });
-      if (error) throw error;
-      alert("Revisa tu correo para confirmar tu cuenta");
-      navigate("/login");
-    } catch (error) {
-      setError(error.message);
-    }
+    await signUp(email, password, name);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
-      <div className="w-full max-w-md p-8">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-2xl space-y-6"
-        >
-          <h1 className="text-4xl font-semibold text-center mb-8 text-gray-800 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Crear Cuenta
+    <div className="min-h-screen bg-gradient-to-br from-[#e93f6e] to-[#f4e387] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-[#e93f6e] mb-2">
+            StreamingTV
           </h1>
+          <p className="text-gray-600">Crea tu cuenta</p>
+        </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre
-              </label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Tu nombre completo"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="ejemplo@correo.com"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Nombre completo
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#e93f6e] focus:border-transparent transition"
+              placeholder="Tu nombre"
+              required
+            />
           </div>
 
-          {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#e93f6e] focus:border-transparent transition"
+              placeholder="tu@email.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#e93f6e] focus:border-transparent transition"
+              placeholder="••••••••"
+              required
+            />
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl"
+            className="w-full bg-[#e93f6e] text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition"
           >
-            Registrarse
+            Crear Cuenta
           </button>
+        </form>
 
-          <p className="text-center text-gray-600 text-sm mt-4">
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
             ¿Ya tienes una cuenta?{" "}
-            <a
-              href="/login"
-              className="text-indigo-600 hover:text-indigo-800 font-medium"
+            <Link
+              to="/login"
+              className="text-[#e93f6e] font-semibold hover:underline"
             >
               Inicia sesión
-            </a>
+            </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Signup;
