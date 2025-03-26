@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useMemo, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 const AuthContext = createContext();
+import { toast } from "react-toastify";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -16,13 +16,13 @@ export function AuthProvider({ children }) {
 
       if (event === "SIGNED_IN") {
         console.log("User signed in:", session?.user);
+        toast.success("Bienvenido de nuevo");
       } else if (event === "SIGNED_OUT") {
         console.log("User signed out");
         window.location.href = "/";
       }
     });
 
-    // Cargar sesión inicial
     const initSession = async () => {
       const {
         data: { session },
@@ -41,6 +41,7 @@ export function AuthProvider({ children }) {
   const signUp = async (email, password, name) => {
     try {
       setIsLoading(true);
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -53,13 +54,25 @@ export function AuthProvider({ children }) {
 
       if (error) throw error;
 
-      // toast.success(
-      //   "Registro exitoso. Por favor revisa tu correo para la confirmación."
-      // );
-      window.location.href = "/login";
+      toast.success(
+        "Registro exitoso. Por favor revisa tu correo para la confirmación."
+      );
+      window.location.href = "/signin";
     } catch (error) {
-      // toast.error(error.message || "Error durante el registro.");
-      console.error("Error signing up:", error);
+      switch (error.code) {
+        case "email_exists":
+          toast.error("El correo electrónico ya está en uso.");
+          break;
+        case "email_address_invalid":
+          toast.error("El correo electrónico no es válido.");
+          break;
+        case "over_email_send_rate_limit":
+          toast.error("El correo electrónico ya está en uso.");
+          break;
+        default:
+          toast.error("Error durante el registro.");
+          break;
+      }
     } finally {
       setIsLoading(false);
     }
@@ -75,11 +88,17 @@ export function AuthProvider({ children }) {
 
       if (error) throw error;
 
-      // toast.success("Inicio de sesión exitoso");
+      toast.success("Inicio de sesión exitoso");
       window.location.href = "/player";
     } catch (error) {
-      // toast.error(error.message || "Error durante el inicio de sesión.");
-      console.error("Error signing in:", error);
+      switch (error.code) {
+        case "invalid_credentials":
+          toast.error("Correo o contraseña incorrectos");
+          break;
+        default:
+          toast.error("Error durante el inicio de sesión.");
+          break;
+      }
     } finally {
       setIsLoading(false);
     }
@@ -90,9 +109,9 @@ export function AuthProvider({ children }) {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
-      // toast.error(error.message || "Error al cerrar sesión.");
+      toast.error(error.message || "Error al cerrar sesión.");
       console.error("Error signing out:", error);
     } finally {
       setIsLoading(false);

@@ -1,12 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-import { Tv, LogOut, User } from "lucide-react";
-import { useState, useEffect } from "react";
 
 const Header = () => {
   const { user, signOut } = useAuth();
-  const location = useLocation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm shadow-md z-50 py-5">
@@ -39,9 +35,8 @@ const Header = () => {
                   Iniciar Sesión
                 </Link>
                 <Link
-                  to="/"
+                  to="/signup"
                   className="bg-[#f4e387] text-[#e93f6e] px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition"
-                  onClick={() => signOut()}
                 >
                   Registrarse
                 </Link>

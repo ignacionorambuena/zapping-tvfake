@@ -5,6 +5,7 @@ import PlayerPage from "./pages/player";
 import Index from "./pages";
 import { AuthProvider } from "./context/AuthContext";
 import Header from "./components/header";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -12,12 +13,20 @@ function App() {
       <div className="h-screen w-screen m-0 p-0">
         <AuthProvider>
           <Router>
+            <ToastContainer position="bottom-right" autoClose={5000} />
             <Header />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/signin" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/player" element={<PlayerPage />} />
+              <Route
+                path="/player"
+                element={
+                  <ProtectedRoute>
+                    <PlayerPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Router>
         </AuthProvider>

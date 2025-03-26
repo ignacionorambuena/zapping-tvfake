@@ -4,7 +4,6 @@ import Hls from "hls.js";
 const VideoPlayer = ({ src, poster, autoPlay = false }) => {
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [bufferProgress, setBufferProgress] = useState(0);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -55,15 +54,6 @@ const VideoPlayer = ({ src, poster, autoPlay = false }) => {
             }
           }
         });
-
-        video.addEventListener("progress", () => {
-          if (video.buffered.length > 0) {
-            const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-            const duration = video.duration;
-            const progress = (bufferedEnd / duration) * 100;
-            setBufferProgress(progress);
-          }
-        });
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = src;
         video.addEventListener("loadedmetadata", () => {
@@ -109,8 +99,6 @@ const PlayerPage = () => {
   const hlsServerUrl =
     import.meta.env.VITE_HLS_SERVER_URL || "http://localhost:3000";
   const streamUrl = `${hlsServerUrl}/live.m3u8`;
-
-  console.log("HLS Server URL:", hlsServerUrl);
 
   useEffect(() => {
     fetch(streamUrl)
