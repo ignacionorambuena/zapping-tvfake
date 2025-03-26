@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  hls-stream:
+    build:
+      context: ./hls-stream
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./hls-stream/video_segments:/app/video_segments
+    environment:
+      - PORT=3000
+      - HOST=0.0.0.0
+    networks:
+      - zapping-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000/live.m3u8"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./fe-zapping-tvfake
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_HLS_SERVER_URL=http://localhost:3000
+    depends_on:
+      hls-stream:
+        condition: service_healthy
+    networks:
+      - zapping-network
+
+networks:
+  zapping-network:
+    name: zapping-network
+    driver: bridge 
