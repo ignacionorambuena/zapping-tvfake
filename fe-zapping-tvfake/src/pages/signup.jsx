@@ -18,7 +18,7 @@ const Signup = () => {
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-[#e93f6e] mb-2">
-            StreamingTV
+            Zapping TVFake
           </h1>
           <p className="text-gray-600">Crea tu cuenta</p>
         </div>

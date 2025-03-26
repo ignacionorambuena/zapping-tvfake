@@ -89,7 +89,7 @@ export function AuthProvider({ children }) {
       if (error) throw error;
 
       toast.success("Inicio de sesión exitoso");
-      window.location.href = "/player";
+      window.location.href = "/";
     } catch (error) {
       switch (error.code) {
         case "invalid_credentials":
