@@ -39,7 +39,7 @@ const Index = () => {
 
         <div className="mt-32 text-center">
           <h3 className="text-4xl font-bold text-white mb-12">
-            ¿Por qué elegir StreamingTV?
+            ¿Por qué elegir Zapping TVFake?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg">

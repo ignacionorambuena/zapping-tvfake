@@ -57,8 +57,11 @@ export function AuthProvider({ children }) {
       toast.success(
         "Registro exitoso. Por favor revisa tu correo para la confirmación."
       );
-      window.location.href = "/signin";
+      setTimeout(() => {
+        window.location.href = "/signin";
+      }, 3000);
     } catch (error) {
+      console.log(error);
       switch (error.code) {
         case "email_exists":
           toast.error("El correo electrónico ya está en uso.");
