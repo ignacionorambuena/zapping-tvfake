@@ -115,9 +115,9 @@ const PlayerPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e93f6e] to-[#f4e387] flex items-center justify-center p-6">
-      <div className="w-full max-w-7xl mx-auto space-y-8 mt-10">
+      <div className="w-full max-w-7xl mx-auto space-y-8 mt-16">
         <h1 className="text-4xl font-bold text-center text-white mb-8 tracking-tight">
-          Zapping TVFake
+          Big buck bunny
         </h1>
         <div className="relative">
           <VideoPlayer src={streamUrl} autoPlay controls />
